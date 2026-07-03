@@ -17,6 +17,7 @@
  - how to evaluate TPC-C?
  - how to evaluate TPC-H?
   - which scale factors for Raspberry Pi vs. AMD Zen5?
+  - test 1, 2, 4, 8, 16, 32, 64, 128
 
 ### General Open Questions:
  - SemBench:
