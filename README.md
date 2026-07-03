@@ -1,6 +1,14 @@
 # CIDR 2027
 
-## Benchmark Setups:
+## Setup:
+ - Docker
+  - Umbra
+  - Postgres
+  - (DuckDB)
+ - BenchBase
+  - provides TPC-C, TPC-H, and YCSB
+
+## Setup Questions:
  - how to evaluate TPC-C?
  - how to evaluate TPC-H?
   - which scale factors for Raspberry Pi vs. AMD Zen5?
@@ -15,3 +23,4 @@
    - can we do Lora stuff?
    - exolab interence?
    - compare DGX vs. "our" DES MacBook cluster?
+   - **is this collective GPU stuff relevant at all?**
