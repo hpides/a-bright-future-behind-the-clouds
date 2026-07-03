@@ -8,17 +8,17 @@
  - BenchBase
   - provides TPC-C, TPC-H, and YCSB
 
-## Setup Questions:
- - how to evaluate TPC-C?
- - how to evaluate TPC-H?
-  - which scale factors for Raspberry Pi vs. AMD Zen5?
-
 ## Status:
  - using Docker
  - we can run all three databases
  - we are in the process of getting BenchBase set up
 
-## Open Questions:
+### Setup Questions:
+ - how to evaluate TPC-C?
+ - how to evaluate TPC-H?
+  - which scale factors for Raspberry Pi vs. AMD Zen5?
+
+### General Open Questions:
  - SemBench:
    - can we do Lora stuff?
    - exolab interence?
