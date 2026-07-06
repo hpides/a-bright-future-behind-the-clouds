@@ -2,7 +2,7 @@
 
 ### Start & connect to a DB:
 
-```docker compose -up <database_service>```
+```docker compose up <database_service>```
 
 Current supported database services: postgres, umbra, duckdb  
 
