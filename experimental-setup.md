@@ -12,10 +12,25 @@ Current supported database services: postgres, umbra, duckdb
 
 ### Run Benchbase with Postgres
 
-``` docker compose --profile bench run --rm benchbase \
+``` 
+docker compose --profile bench run --rm benchbase \
   -b tpcc \
   -c /work/config/postgres-tpcc.xml \
   --create=true \
   --load=true \
   --execute=true \
-  -d /benchbase/results ```
+  -d /benchbase/results 
+  
+```
+### Run Benchbase with Umbra
+
+``` 
+docker compose --profile bench run --rm benchbase \
+  -b tpcc \
+  -c /work/config/umbra-tpcc.xml \
+  --create=true \
+  --load=true \
+  --execute=true \
+  -d /benchbase/results 
+  
+```
