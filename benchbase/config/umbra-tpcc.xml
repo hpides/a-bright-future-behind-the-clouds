@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<parameters>
+  <!-- Umbra exposes a PostgreSQL-compatible wire protocol, so use the PostgreSQL JDBC driver. -->
+  <type>POSTGRES</type>
+  <driver>org.postgresql.Driver</driver>
+  <url>jdbc:postgresql://umbra:5432/postgres?sslmode=disable&amp;ApplicationName=benchbase-tpcc-umbra&amp;reWriteBatchedInserts=true</url>
+  <username>postgres</username>
+  <password>postgres</password>
+  <reconnectOnConnectionFailure>true</reconnectOnConnectionFailure>
+  <isolation>TRANSACTION_SERIALIZABLE</isolation>
+  <batchsize>128</batchsize>
+
+  <!-- Scale factor is the number of warehouses in TPC-C. Start small; increase after smoke testing. -->
+  <scalefactor>1</scalefactor>
+
+  <!-- Driver concurrency. Usually align terminals with warehouses for first runs. -->
+  <terminals>1</terminals>
+
+  <!-- The workload -->
+  <works>
+    <work>
+      <time>60</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+  </works>
+
+  <!-- TPC-C transaction mix: NewOrder, Payment, OrderStatus, Delivery, StockLevel -->
+  <transactiontypes>
+    <transactiontype>
+      <name>NewOrder</name>
+    </transactiontype>
+    <transactiontype>
+      <name>Payment</name>
+    </transactiontype>
+    <transactiontype>
+      <name>OrderStatus</name>
+    </transactiontype>
+    <transactiontype>
+      <name>Delivery</name>
+    </transactiontype>
+    <transactiontype>
+      <name>StockLevel</name>
+    </transactiontype>
+  </transactiontypes>
+</parameters>
