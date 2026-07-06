@@ -1,0 +1,53 @@
+services:
+  duckdb:
+    image: duckdb/duckdb:1.5.4
+    container_name: duckdb
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    # Note: this image is a CLI binary, not a server — it doesn't listen on a port.
+    # Use `docker compose run --rm duckdb` to get an interactive shell instead of `up -d`.
+
+  postgres:
+    image: postgres:18.4-alpine
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+  umbra:
+    image: umbradb/umbra:26.06
+    container_name: umbra
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    ulimits:
+      nofile:
+        soft: 1048576
+        hard: 1048576
+      memlock:
+        soft: 8388608
+        hard: 8388608
+    volumes:
+      - umbra-data:/var/db
+      
+  benchbase:
+    build:
+      context: ./benchbase
+    container_name: benchbase
+    volumes:
+      - ./benchbase/config:/work/config:ro
+      - ./benchbase/results:/benchbase/results
+    depends_on:
+        - postgres
+        - umbra
+    profiles:
+        - bench
+
+volumes:
+  postgres-data:
+  umbra-data:
