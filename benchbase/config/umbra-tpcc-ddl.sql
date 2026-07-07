@@ -1,13 +1,13 @@
-DROP TABLE IF EXISTS history;
-DROP TABLE IF EXISTS new_order;
 DROP TABLE IF EXISTS order_line;
-DROP TABLE IF EXISTS oorder;
+DROP TABLE IF EXISTS new_order;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS history;
+DROP TABLE IF EXISTS stock;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS district;
-DROP TABLE IF EXISTS stock;
 DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS warehouse;
-
+  
 CREATE TABLE warehouse (
   w_id int NOT NULL,
   w_ytd decimal(12, 2) NOT NULL,
