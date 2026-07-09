@@ -11,7 +11,7 @@ This will:
 4. Write results (latency/throughput CSVs, histograms) to `./results/DB_ENGINE`
    on your host.
 
-## Run TPC-C CedarDB || Postgres on Start-up
+## Run TPC-C CedarDB || Postgres on container start-up
 
 ```bash
 # Replace DB_ENGINE with cedardb or postgres
@@ -25,12 +25,12 @@ docker compose --env-file benchbase_config.env --profile DB_ENGINE down -v
 
 ## Build the DB container and run TPC-C
 
+1. Start only the database (replace DB_ENGINE with cedardb or postgres)
 ```bash
-   # Replace DB_ENGINE with cedardb or postgres
-   # 1. Start only the database
    docker compose --env-file benchbase.env --profile DB_ENGINE up -d DB_ENGINE
-
-   # 2. Whenever you want — trigger the benchmark run
+```
+2. Trigger the benchmark run
+```bash
    docker compose --env-file benchbase.env --profile DB_ENGINE run --rm benchbase-DB_ENGINE
 ```
 
