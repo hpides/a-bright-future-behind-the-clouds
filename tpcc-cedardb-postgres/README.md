@@ -25,37 +25,11 @@ docker compose --env-file benchbase_config.env --profile DB_ENGINE down -v
 
 1. Start only the database (replace DB_ENGINE with cedardb or postgres)
 ```bash
-   docker compose --env-file benchbase.env --profile DB_ENGINE up -d DB_ENGINE
+   docker compose --env-file benchbase_config.env --profile DB_ENGINE up -d DB_ENGINE
 ```
 2. Trigger the benchmark run
 ```bash
-   docker compose --env-file benchbase.env --profile DB_ENGINE run --rm benchbase-DB_ENGINE
-```
-
-## Running against an existing database instance
-
-If you already have CedarDB or Postgres running elsewhere, skip
-`docker-compose` and just run the Benchbase image directly, pointing it at
-your host. `DB_ENGINE` is still required:
-
-```bash
-docker build -t benchbase-tpcc .
-
-# CedarDB
-docker run --rm \
-  -e DB_ENGINE=cedardb \
-  -e DB_HOST=my-cedardb-host -e DB_PORT=5432 \
-  -e DB_NAME=benchbase -e DB_USER=admin -e DB_PASSWORD=password \
-  -v "$(pwd)/results:/benchbase/results" \
-  benchbase-tpcc
-
-# Postgres
-docker run --rm \
-  -e DB_ENGINE=postgres \
-  -e DB_HOST=my-postgres-host -e DB_PORT=5432 \
-  -e DB_NAME=benchbase -e DB_USER=admin -e DB_PASSWORD=password \
-  -v "$(pwd)/results:/benchbase/results" \
-  benchbase-tpcc
+   docker compose --env-file benchbase_config.env --profile DB_ENGINE run --rm benchbase-DB_ENGINE
 ```
 
 ## Quick start — DuckDB (TPC-H)
