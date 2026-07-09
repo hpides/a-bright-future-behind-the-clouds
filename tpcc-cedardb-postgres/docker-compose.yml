@@ -50,8 +50,6 @@ services:
       - ./results/cedardb:/benchbase/results
 
   # --- Postgres target (behind the "postgres" profile) --------------------
-  # Independent of CedarDB — its own container, port, and volume — so you
-  # can bring up either engine on its own, or both side by side to compare.
 
   postgres:
     image: postgres:18.4-trixie
