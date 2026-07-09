@@ -1,0 +1,110 @@
+x-tpcc-tuning: &tpcc-tuning
+  TPCC_WAREHOUSES: ${TPCC_WAREHOUSES:-10}
+  TPCC_TERMINALS: ${TPCC_TERMINALS:-4}
+  TPCC_DURATION_SEC: ${TPCC_DURATION_SEC:-10}
+  BENCHBASE_CREATE: ${BENCHBASE_CREATE:-true}
+  BENCHBASE_LOAD: ${BENCHBASE_LOAD:-true}
+  BENCHBASE_EXECUTE: ${BENCHBASE_EXECUTE:-true}
+  DB_ISOLATION: ${DB_ISOLATION:-TRANSACTION_REPEATABLE_READ}
+
+x-pg-healthcheck: &pg-healthcheck
+  test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d ${DB_NAME:-benchbase} || exit 1"]
+  interval: 5s
+  timeout: 5s
+  retries: 20
+
+services:
+
+  # --- CedarDB target (behind the "cedardb" profile) ---------------------
+
+  cedardb:
+    image: cedardb/cedardb
+    container_name: cedardb
+    profiles: ["cedardb"]
+    environment:
+      CEDAR_USER: ${DB_USER:-admin}
+      CEDAR_PASSWORD: ${DB_PASSWORD:-password}
+      CEDAR_DB: ${DB_NAME:-benchbase}
+    ports:
+      - "${CEDARDB_HOST_PORT:-5432}:5432"
+    volumes:
+      - cedardb-data:/var/lib/cedardb/data
+    healthcheck: *pg-healthcheck
+
+  benchbase-cedardb:
+    build: .
+    container_name: benchbase-tpcc-cedardb
+    profiles: ["cedardb"]
+    depends_on:
+      cedardb:
+        condition: service_healthy
+    environment:
+      <<: *tpcc-tuning
+      DB_ENGINE: cedardb
+      DB_HOST: cedardb
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-benchbase}
+      DB_USER: ${DB_USER:-admin}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - ./results/cedardb:/benchbase/results
+
+  # --- Postgres target (behind the "postgres" profile) --------------------
+  # Independent of CedarDB — its own container, port, and volume — so you
+  # can bring up either engine on its own, or both side by side to compare.
+
+  postgres:
+    image: postgres:18.4-trixie
+    container_name: postgres
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-benchbase}
+    ports:
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      # Postgres 18 moved its default data directory/volume under
+      # /var/lib/postgresql (versioned subdir), not /var/lib/postgresql/data.
+      - postgres-data:/var/lib/postgresql
+    healthcheck: *pg-healthcheck
+
+  benchbase-postgres:
+    build: .
+    container_name: benchbase-tpcc-postgres
+    profiles: ["postgres"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *tpcc-tuning
+      DB_ENGINE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-benchbase}
+      DB_USER: ${DB_USER:-admin}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - ./results/postgres:/benchbase/results
+
+  # --- DuckDB target (behind the "duckdb" profile) -------------------------
+  # DuckDB is embedded/in-process — no client-server protocol Benchbase can
+  # connect to — and isn't built for TPC-C's OLTP-style traffic anyway (see
+  # README), so it doesn't go through Benchbase or run TPC-C at all. Instead
+  # this runs DuckDB's own built-in `tpch` extension: generates a TPC-H
+  # dataset in memory and runs all 22 analytical queries, timing each. No
+  # separate database service, no depends_on/healthcheck, no volume — it's a
+  # single one-shot batch container.
+  duckdb-tpch:
+    image: duckdb/duckdb:1.5.4
+    container_name: duckdb-tpch
+    profiles: ["duckdb"]
+    environment:
+      TPCH_SCALE_FACTOR: ${TPCH_SCALE_FACTOR:-1}
+    volumes:
+      - ./duckdb/run_tpch.sql:/scripts/run_tpch.sql:ro
+    command: ["-f", "/scripts/run_tpch.sql"]
+
+volumes:
+  cedardb-data:
+  postgres-data:
