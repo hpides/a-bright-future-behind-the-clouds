@@ -1,6 +1,6 @@
 # Benchbase TPC-C on CedarDB and Postgres, TPC-H on DuckDB
 
-## Quick start
+## Quick start - Run TPC-C CedarDB || Postgres on container start-up
 
 This will:
 1. Start CedarDB or Postgres, creating user
@@ -11,10 +11,8 @@ This will:
 4. Write results (latency/throughput CSVs, histograms) to `./results/DB_ENGINE`
    on your host.
 
-## Run TPC-C CedarDB || Postgres on container start-up
-
+Replace DB_ENGINE with cedardb or postgres
 ```bash
-# Replace DB_ENGINE with cedardb or postgres
 docker compose --env-file benchbase_config.env --profile DB_ENGINE up --build
 ```
 ## Stop containers and remove volumes with:
