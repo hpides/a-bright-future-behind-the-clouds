@@ -21,7 +21,7 @@ docker compose --env-file benchbase_config.env --profile DB_ENGINE up --build
 docker compose --env-file benchbase_config.env --profile DB_ENGINE down -v
 ```
 
-## Build the DB container and run TPC-C
+## Build the DB container and run TPC-C independently
 
 1. Start only the database (replace DB_ENGINE with cedardb or postgres)
 ```bash
