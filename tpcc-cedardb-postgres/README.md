@@ -17,7 +17,7 @@ This will:
 # Replace DB_ENGINE with cedardb or postgres
 docker compose --env-file benchbase_config.env --profile DB_ENGINE up --build
 ```
-## Stop and remove volumes everything down (and wipe both volumes) with:
+## Stop containers and remove volumes with:
 
 ```bash
 docker compose --env-file benchbase_config.env --profile DB_ENGINE down -v
