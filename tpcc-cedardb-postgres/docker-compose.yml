@@ -88,22 +88,16 @@ services:
       - ./results/postgres:/benchbase/results
 
   # --- DuckDB target (behind the "duckdb" profile) -------------------------
-  # DuckDB is embedded/in-process — no client-server protocol Benchbase can
-  # connect to — and isn't built for TPC-C's OLTP-style traffic anyway (see
-  # README), so it doesn't go through Benchbase or run TPC-C at all. Instead
-  # this runs DuckDB's own built-in `tpch` extension: generates a TPC-H
-  # dataset in memory and runs all 22 analytical queries, timing each. No
-  # separate database service, no depends_on/healthcheck, no volume — it's a
-  # single one-shot batch container.
   duckdb-tpch:
-    image: duckdb/duckdb:1.5.4
+    image: duckdb/duckdb:latest
     container_name: duckdb-tpch
     profiles: ["duckdb"]
     environment:
       TPCH_SCALE_FACTOR: ${TPCH_SCALE_FACTOR:-1}
     volumes:
       - ./duckdb/run_tpch.sql:/scripts/run_tpch.sql:ro
-    command: ["-f", "/scripts/run_tpch.sql"]
+    command: ["duckdb", "-f", "/scripts/run_tpch.sql"]
+
 
 volumes:
   cedardb-data:
