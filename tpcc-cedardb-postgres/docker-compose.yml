@@ -21,6 +21,7 @@ services:
     image: cedardb/cedardb
     container_name: cedardb
     profiles: ["cedardb"]
+    cpuset: "${CPU_SET_DB}"
     environment:
       CEDAR_USER: ${DB_USER:-admin}
       CEDAR_PASSWORD: ${DB_PASSWORD:-password}
@@ -35,6 +36,7 @@ services:
     build: .
     container_name: benchbase-tpcc-cedardb
     profiles: ["cedardb"]
+    cpuset: "${CPU_SET_BENCHBASE}"
     depends_on:
       cedardb:
         condition: service_healthy
@@ -55,6 +57,7 @@ services:
     image: postgres:18.4-trixie
     container_name: postgres
     profiles: ["postgres"]
+    cpuset: "${CPU_SET_DB}"
     environment:
       POSTGRES_USER: ${DB_USER:-admin}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
@@ -71,6 +74,7 @@ services:
     build: .
     container_name: benchbase-tpcc-postgres
     profiles: ["postgres"]
+    cpuset: "${CPU_SET_BENCHBASE}"
     depends_on:
       postgres:
         condition: service_healthy
