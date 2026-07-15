@@ -1,0 +1,4 @@
+time_offset	cpu_percent	cpu_user	cpu_system	memory_rss	memory_vms	read_bytes	write_bytes
+0.0	0	0.08	0.2	52535296	268636160	0	0
+1.0	688	6.69	0.47	457187328	1398652928	0	2428928
+2.01	964	16.2	0.6	595779584	1398652928	0	2523136

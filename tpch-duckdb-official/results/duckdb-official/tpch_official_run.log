@@ -1,0 +1,90 @@
+Running the TPC-H Benchmark on scale factor 1
+Scale factor 1
+Parquet refresh
+Use cached database from gen/sf1/tpch_template.duckdb
+Logging to log-sf1-2026-07-15T11-02-31.689215+00-00.tsv
+Starting query stream 1
+Done query 1 1 0.09
+Done query 1 2 0.03
+Done query 1 3 0.08
+Done query 1 4 0.03
+Done query 1 5 0.01
+Done query 1 6 0.03
+Done query 1 7 0.01
+Done query 1 8 0.04
+Done query 1 9 0.02
+Done query 1 10 0.03
+Done query 1 11 0.03
+Done query 1 12 0.02
+Done query 1 13 0.1
+Done query 1 14 0.07
+Done query 1 15 0.01
+Done query 1 16 0.02
+Done query 1 17 0.02
+Done query 1 18 0.03
+Done query 1 19 0.11
+Done query 1 20 0.03
+Done query 1 21 0.04
+Done query 1 22 0.03
+Done query stream 1
+power_total_queries_duration    = 0.90
+tpch_power_at_size              = 116831.13
+Running 2 query streams, 1 refresh sets
+Starting query stream 1
+Starting query stream 2
+start refresh 2
+Done query 2 1 0.02
+done refresh 2
+Done query 2 2 0.02
+Done query 2 3 0.04
+Done query 1 1 0.12
+Done query 2 4 0.04
+Done query 1 2 0.04
+Done query 2 5 0.05
+Done query 1 3 0.1
+Done query 1 4 0.05
+Done query 2 6 0.14
+Done query 1 5 0.01
+Done query 1 6 0.07
+Done query 1 7 0.01
+Done query 2 7 0.15
+Done query 1 8 0.06
+Done query 2 8 0.02
+Done query 1 9 0.02
+Done query 2 9 0.03
+Done query 1 10 0.04
+Done query 2 10 0.03
+Done query 2 11 0.04
+Done query 1 11 0.05
+Done query 1 12 0.02
+Done query 2 12 0.06
+Done query 2 13 0.06
+Done query 1 13 0.13
+Done query 2 14 0.04
+Done query 1 14 0.12
+Done query 2 15 0.12
+Done query 1 15 0.05
+Done query 1 16 0.06
+Done query 2 16 0.1
+Done query 1 17 0.05
+Done query 2 17 0.05
+Done query 2 18 0.04
+Done query 1 18 0.05
+Done query 2 19 0.05
+Done query 2 20 0.05
+Done query 2 21 0.01
+Done query 1 19 0.17
+Done query 1 20 0.05
+Done query 2 22 0.13
+Done query stream 2
+Done query 1 21 0.04
+Done query 1 22 0.03
+Done query stream 1
+Logged to log-sf1-2026-07-15T11-02-31.689215+00-00.tsv
+
+tpch_load_time                  = n/a (ran on cached database)
+throughput_measurement_interval = 1.34
+power_total_queries_duration    = 0.90
+tpch_power_at_size              = 116831.13
+tpch_throughput_at_size         = 118208.96
+tpch_qphh_at_size               = 117518.03

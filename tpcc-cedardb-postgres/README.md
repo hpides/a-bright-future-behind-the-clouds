@@ -1,4 +1,4 @@
-# Benchbase TPC-C on CedarDB and Postgres, TPC-H on DuckDB
+# Benchbase TPC-C on CedarDB and Postgres  
 
 ## Quick start - Run TPC-C CedarDB || Postgres on container start-up
 
@@ -32,28 +32,10 @@ docker compose --env-file benchbase_config.env --profile DB_ENGINE down -v
    docker compose --env-file benchbase_config.env --profile DB_ENGINE run --rm benchbase-DB_ENGINE
 ```
 
-## Quick start — DuckDB (TPC-H)
-
-```bash
-docker compose --env-file benchbase_config.env --profile duckdb up --build
-```
-
-This runs entirely in memory in a single one-shot container — no separate
-database service, no volume, nothing to tear down. It:
-1. Installs and loads DuckDB's `tpch` extension.
-2. Generates a TPC-H dataset at scale factor `TPCH_SCALE_FACTOR` (default `1`;
-   override via `docker compose --env-file benchbase_config.env --profile duckdb run -e TPCH_SCALE_FACTOR=5 duckdb-tpch`).
-3. Runs all 22 TPC-H queries, printing each query and its runtime to the
-   container's logs (`.echo on` / `.timer on`).
-
-To save the output, create the folder and redirect into it:
-`mkdir -p results/duckdb && docker compose --env-file benchbase_config.env --profile duckdb up --build > results/duckdb/tpch-run.log 2>&1`.
-
 ## Tuning the benchmark
 
 The table below applies to `benchbase-cedardb`/`benchbase-postgres` (TPC-C
-only — `duckdb-tpch` just takes `TPCH_SCALE_FACTOR`, see above). Defaults for
-these come from `benchbase_config.env`; use `docker run -e ...` /
+only. Defaults for these come from `benchbase_config.env`; use `docker run -e ...` /
 `docker compose run -e ...` for one-off overrides without touching
 `benchbase_config.env` (or the compose file) at all:
 

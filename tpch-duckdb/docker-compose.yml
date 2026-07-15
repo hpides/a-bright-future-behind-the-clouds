@@ -1,0 +1,13 @@
+  # --- DuckDB target (behind the "duckdb" profile) -------------------------
+services:
+  duckdb-tpch:
+    image: duckdb/duckdb:latest
+    container_name: duckdb-tpch
+    profiles: ["duckdb"]
+    cpuset: "${CPU_SET_DB}"
+    environment:
+      TPCH_SCALE_FACTOR: ${TPCH_SCALE_FACTOR:-1}
+    volumes:
+    - ./:/scripts/:ro,z
+    - ./results/duckdb:/results
+    command: ["duckdb", "-f", "/scripts/run_tpch.sql"]
