@@ -57,7 +57,6 @@ services:
     image: postgres:18.4-trixie
     container_name: postgres
     profiles: ["postgres"]
-    cpuset: "${CPU_SET_DB}"
     environment:
       POSTGRES_USER: ${DB_USER:-admin}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
@@ -68,6 +67,15 @@ services:
       # Postgres 18 moved its default data directory/volume under
       # /var/lib/postgresql (versioned subdir), not /var/lib/postgresql/data.
       - postgres-data:/var/lib/postgresql
+      # Custom tuning (postgres/tuning.conf) is layered on top of the
+      # container's own generated postgresql.conf via include_if_exists,
+      # injected by init-custom-config.sh on first initialization — see
+      # that script's comments for why we don't just replace the config
+      # file outright. Both paths must exist as real files on the host
+      # before the first run, same caveat as duckdb/run_tpch.sql elsewhere
+      # in this repo (see README's Notes section).
+      - ./tuning/tuning.conf:/etc/postgresql-custom/tuning.conf:ro,z
+      - ./tuning/init-custom-config.sh:/docker-entrypoint-initdb.d/init-custom-config.sh:ro,z
     healthcheck: *pg-healthcheck
 
   benchbase-postgres:
