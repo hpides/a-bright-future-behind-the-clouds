@@ -3,7 +3,7 @@
 ## Quick start — DuckDB (TPC-H)
 
 ```bash
-docker compose --env-file tpch_config.env --profile duckdb up --build
+docker compose --env-file tpch_config.env --profile duckdb-official up --build
 ```
 
 This runs entirely in memory in a single one-shot container — no separate
@@ -26,5 +26,5 @@ database service, no volume, nothing to tear down. It:
 ## Stop containers and remove volumes with:
 
 ```bash
-docker compose --env-file tpch_config.env --profile duckdb down -v
+docker compose --env-file tpch_config.env --profile duckdb-official down -v
 ```
