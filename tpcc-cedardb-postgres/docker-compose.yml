@@ -76,7 +76,7 @@ services:
       # Postgres 18 moved its default data directory/volume under
       # /var/lib/postgresql (versioned subdir), not /var/lib/postgresql/data.
       - postgres-data:/var/lib/postgresql
-      - "${POSTGRES_CONFIG}":/etc/postgresql/postgresql.conf:ro
+      - "${POSTGRES_CONFIG:-./config/postgres/default.conf}":/etc/postgresql/postgresql.conf:ro
     healthcheck: *pg-healthcheck
     deploy:
       resources:
