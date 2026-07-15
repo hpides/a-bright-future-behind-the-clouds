@@ -1,4 +1,4 @@
-# TPC-H on DuckDB
+# TPC-H Extension on DuckDB
 
 ## Quick start — DuckDB (TPC-H)
 
