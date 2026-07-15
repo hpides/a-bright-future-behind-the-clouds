@@ -1,0 +1,36 @@
+services:
+
+  # --- DuckDB *official* TPC-H metric (behind the "duckdb-official" profile) --
+  # Wraps DuckDB Labs' own reference implementation (github.com/duckdb/
+  # duckdb-tpch-power-test), which compiles the actual TPC-H reference
+  # dbgen/qgen toolkit and implements the real Power Test (with RF1/RF2
+  # refresh functions), the real Throughput Test (concurrent streams per the
+  # official scale-factor table, running alongside a live background refresh
+  # stream), and the Composite QphH@Size metric — none of which `duckdb-tpch`
+  # above can produce, since DuckDB's `tpch` SQL extension doesn't support
+  # refresh functions or per-stream query permutations at all.
+  #
+  # This is a genuinely different, heavier thing: real compile step, real
+  # compute time and disk usage (minutes to hours depending on scale
+  # factor), a completely separate profile so it's never accidentally
+  # triggered by `--profile duckdb`. See README before running above the
+  # default TPCH_SCALE_FACTOR=1.
+  #
+  # LICENSING: the TPC-H reference toolkit is under the TPC EULA, which
+  # restricts publicly disclosing results from it except as an official
+  # audited TPC submission, academic/research work, or otherwise clearly
+  # labeled as NOT comparable to an official TPC Benchmark Result — this
+  # setup is not an audited submission. tpch_official_summary.json includes
+  # that disclaimer in its own "note" field.
+  duckdb-tpch-official:
+    build: ./tpch
+    container_name: duckdb-tpch-official
+    profiles: ["duckdb-official"]
+    environment:
+      TPCH_SCALE_FACTOR: ${TPCH_SCALE_FACTOR:-1}
+    volumes:
+      - tpch-official-data:/bench/gen
+      - ./results/duckdb-official:/results:z
+
+volumes:
+  tpch-official-data:

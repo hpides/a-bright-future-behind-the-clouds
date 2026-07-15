@@ -1,0 +1,10 @@
+{
+  "scale_factor": 1,
+  "load_time_seconds": null,
+  "power_total_queries_duration_seconds": 0.9,
+  "tpch_power_at_size": 116831.13,
+  "throughput_measurement_interval_seconds": 1.34,
+  "tpch_throughput_at_size": 118208.96,
+  "tpch_qphh_at_size": 117518.03,
+  "note": "Not an official, audited TPC Benchmark Result. Per the TPC-H reference toolkit's EULA, do not present these figures as comparable to an official TPC Benchmark Result."
+}
