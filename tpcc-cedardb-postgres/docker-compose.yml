@@ -82,7 +82,7 @@ services:
       # file outright. Both paths must exist as real files on the host
       # before the first run, same caveat as duckdb/run_tpch.sql elsewhere
       # in this repo (see README's Notes section).
-      - ./tuning/tuning.conf:/etc/postgresql-custom/tuning.conf:ro,z
+      - "${POSTGRES_TUNING_CONF:-./tuning/tuning.conf}:/etc/postgresql-custom/tuning.conf:ro,z"
       - ./tuning/init-custom-config.sh:/docker-entrypoint-initdb.d/init-custom-config.sh:ro,z
     healthcheck: *pg-healthcheck
     deploy:
