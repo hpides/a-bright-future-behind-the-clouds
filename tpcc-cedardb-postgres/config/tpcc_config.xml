@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <parameters>
-
-    <!-- Connection details.
+  <!-- Connection details.
          DB_TYPE picks Benchbase's DatabaseType, which in turn picks the
          matching DDL/dialect files: CEDARDB uses CedarDB's own
          ddl-cedardb.sql / dialect-cedardb.xml (added by the cedardb/benchbase
@@ -10,46 +9,86 @@
          ddl-postgres.sql unchanged. Either way the wire protocol is
          Postgres's, so the JDBC driver/URL scheme are always org.postgresql
          / jdbc:postgresql. -->
-    <type>${DB_TYPE}</type>
-    <driver>org.postgresql.Driver</driver>
-    <url>jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable&amp;ApplicationName=tpcc&amp;reWriteBatchedInserts=true</url>
-    <username>${DB_USER}</username>
-    <password>${DB_PASSWORD}</password>
-
-    <reconnectOnConnectionFailure>true</reconnectOnConnectionFailure>
-    <isolation>${DB_ISOLATION}</isolation>
-    <batchsize>128</batchsize>
-
-    <!-- Scale factor is the number of warehouses in TPC-C -->
-    <scalefactor>${TPCC_WAREHOUSES}</scalefactor>
-
-    <!-- The workload -->
-    <terminals>${TPCC_TERMINALS}</terminals>
-    <works>
-        <work>
-            <time>${TPCC_DURATION_SEC}</time>
-            <rate>10000</rate>
-            <weights>45,43,4,4,4</weights>
-        </work>
-    </works>
-
-    <!-- TPC-C specific -->
-    <transactiontypes>
-        <transactiontype>
-            <name>NewOrder</name>
-        </transactiontype>
-        <transactiontype>
-            <name>Payment</name>
-        </transactiontype>
-        <transactiontype>
-            <name>OrderStatus</name>
-        </transactiontype>
-        <transactiontype>
-            <name>Delivery</name>
-        </transactiontype>
-        <transactiontype>
-            <name>StockLevel</name>
-        </transactiontype>
-    </transactiontypes>
-
+  <type>${DB_TYPE}</type>
+  <driver>org.postgresql.Driver</driver>
+  <url>
+  jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable&amp;ApplicationName=tpcc&amp;reWriteBatchedInserts=true</url>
+  <username>${DB_USER}</username>
+  <password>${DB_PASSWORD}</password>
+  <reconnectOnConnectionFailure>true</reconnectOnConnectionFailure>
+  <isolation>${DB_ISOLATION}</isolation>
+  <batchsize>128</batchsize>
+  <!-- Scale factor is the number of warehouses in TPC-C -->
+  <scalefactor>${TPCC_WAREHOUSES}</scalefactor>
+  <!-- The workload -->
+  <terminals>${TPCC_TERMINALS}</terminals>
+  <works>
+    <work>
+      <active_terminals>1</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>2</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>4</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>8</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>16</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>32</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+    <work>
+      <active_terminals>64</active_terminals>
+      <warmup>10</warmup>
+      <time>${TPCC_DURATION_SEC}</time>
+      <rate>10000</rate>
+      <weights>45,43,4,4,4</weights>
+    </work>
+  </works>
+  <!-- TPC-C specific -->
+  <transactiontypes>
+    <transactiontype>
+      <name>NewOrder</name>
+    </transactiontype>
+    <transactiontype>
+      <name>Payment</name>
+    </transactiontype>
+    <transactiontype>
+      <name>OrderStatus</name>
+    </transactiontype>
+    <transactiontype>
+      <name>Delivery</name>
+    </transactiontype>
+    <transactiontype>
+      <name>StockLevel</name>
+    </transactiontype>
+  </transactiontypes>
 </parameters>
