@@ -27,49 +27,49 @@
       <active_terminals>1</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>2</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>4</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>8</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>16</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>32</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
     <work>
       <active_terminals>64</active_terminals>
       <warmup>10</warmup>
       <time>${TPCC_DURATION_SEC}</time>
-      <rate>10000</rate>
+      <rate>unlimited</rate>
       <weights>45,43,4,4,4</weights>
     </work>
   </works>
