@@ -19,6 +19,8 @@ services:
   duckdb-tpch-prebuilt:
     build:
       context: ./duckdb-prebuilt
+      additional_contexts:
+        ssd_data: /data_nvme/itolovski/data
       args:
         TPCH_SF: ${TPCH_SF:-1}
     container_name: duckdb-tpch-prebuilt

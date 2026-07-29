@@ -22,5 +22,5 @@ ARG TPCH_SF=1
 FROM duckdb/duckdb:latest
 ARG TPCH_SF
 ENV TPCH_SF=${TPCH_SF}
-COPY /data_nvme/itolovski/data/tpch-sf${TPCH_SF}.db /data/tpch-sf${TPCH_SF}.db
+COPY --from=ssd_data tpch-sf${TPCH_SF}.db /data/tpch-sf${TPCH_SF}.db
 COPY run_tpch_prebuilt.sql /scripts/run_tpch_prebuilt.sql
