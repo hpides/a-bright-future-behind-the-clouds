@@ -46,7 +46,7 @@ if [ "${valid}" != "true" ]; then
     exit 1
 fi
 
-DATA_DIR="/data_nvme/itolovski/data"
+DATA_DIR="/data_nvme/tpch-data"
 DATA_FILE="${DATA_DIR}/tpch-sf${SF}.db"
 URL="https://blobs.duckdb.org/data/tpch-sf${SF}.db"
 
