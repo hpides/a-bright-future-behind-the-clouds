@@ -157,3 +157,36 @@ class Alternative:
             running += cf[t] * discount_factor(r, t)
             cumulative.append(running)
         return years, cumulative
+
+    def cumulative_present_worth_daily(self, r):
+        """
+        Returns (days, cumulative) where days are in [0, 1, 2, ...] and
+        cumulative[i] is the present worth of all discounted cash flows
+        distributed daily. Capex is paid entirely at day 0, while OPEX is
+        distributed uniformly across each year.
+        """
+        days_total = self.lifetime * 365
+        days = list(range(days_total + 1))
+        cumulative = []
+        running = 0.0
+
+        for day in days:
+            # Calculate which year this day falls into
+            year_frac = day / 365.0
+            year = int(year_frac)
+            
+            pv_daily = 0.0
+            
+            # At day 0, pay the capex
+            if day == 0:
+                pv_daily += self.capex * discount_factor(r, 0.0)
+            
+            # Distribute annual OPEX uniformly across each year
+            annual_opex = self.yearly_opex(year)
+            daily_opex = annual_opex / 365.0
+            pv_daily += daily_opex * discount_factor(r, year_frac)
+            
+            running += pv_daily
+            cumulative.append(running)
+
+        return days, cumulative
