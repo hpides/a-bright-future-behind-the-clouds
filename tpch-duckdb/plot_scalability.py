@@ -1,8 +1,25 @@
 import json
 import os
 import re
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+
+usetex=True
+rc = {
+    "font.family": "serif",
+    "font.serif": ["Linux Libertine O", "Linux Libertine",
+                   "Libertinus Serif", "DejaVu Serif"],
+    "savefig.dpi": 300,
+    "savefig.bbox": "tight",
+}
+if usetex:
+    rc.update({
+        "text.usetex": True,
+        "text.latex.preamble": r"\usepackage[T1]{fontenc}"
+                               r"\usepackage[libertine]{libertine}",
+    })
+matplotlib.rcParams.update(rc)
 
 DATA_ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
 SCALE_FACTORS = ["sf10", "sf30", "sf100"]
@@ -10,8 +27,8 @@ SCALE_FACTORS = ["sf10", "sf30", "sf100"]
 
 MACHINES = {
     "pi5":     {"label": "Raspberry Pi 5",  "color": "#e6194b", "marker": "o", "linestyle": "-"},
-    "m4-max":  {"label": "Apple M4 Max",    "color": "#3cb44b", "marker": "s", "linestyle": "--"},
-    "m4-base": {"label": "Apple M4",        "color": "#f58231", "marker": "v", "linestyle": (0, (3, 1, 1, 1))},
+    "m1":      {"label": "Apple M1",        "color": "#f58231", "marker": "v", "linestyle": (0, (3, 1, 1, 1))},
+    "m4":      {"label": "Apple M4 Max",    "color": "#3cb44b", "marker": "s", "linestyle": "--"},
     "zen5":    {"label": "AMD EPYC (Zen 5)", "color": "#4363d8", "marker": "^", "linestyle": ":"},
     "p620":    {"label": "Lenovo P620",     "color": "#911eb4", "marker": "D", "linestyle": "-."},
 }
@@ -25,7 +42,7 @@ def cpuset_to_threads(cpuset: str) -> int:
 
 
 for sf in SCALE_FACTORS:
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(8, 4))
     sf_num = sf.replace("sf", "")
 
     for machine, style in MACHINES.items():
@@ -72,8 +89,7 @@ for sf in SCALE_FACTORS:
 
     ax.set_xlabel("Number of Threads", fontsize=15)
     ax.set_ylabel("Queries per Second", fontsize=15)
-    ax.set_title(f"DuckDB TPC-H SF{sf_num} Scalability: Pi5 vs M4 vs Zen5 vs P620", fontsize=16, fontweight="bold")
-    ax.legend(fontsize=14)
+    ax.legend(fontsize=14, labelspacing=0.3, handletextpad=0.4, handlelength=1.5)
     ax.tick_params(axis="both", labelsize=14)
     ax.grid(True, which="major", linestyle="--", alpha=0.5)
     ax.grid(True, which="minor", linestyle=":", alpha=0.3)
@@ -82,7 +98,9 @@ for sf in SCALE_FACTORS:
     ax.set_xlim(left=0.75, right=280)
 
     fig.tight_layout()
-    out_path = os.path.join(os.path.dirname(__file__), f"tpch_scalability_combined_{sf}.png")
-    fig.savefig(out_path, dpi=150)
+    # out_path = os.path.join(os.path.dirname(__file__), f"tpch_scalability_combined_{sf}.png")
+    # fig.savefig(out_path, dpi=150)
+    out_path = os.path.join(os.path.dirname(__file__), f"tpch_scalability_combined_{sf}.svg")
+    fig.savefig(out_path)
     plt.close(fig)
     print(f"Saved to {out_path}")
