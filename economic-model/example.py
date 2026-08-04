@@ -237,7 +237,7 @@ class Example:
             ax.axvline(tau, color="gray", linestyle="--", linewidth=0.8,
                        alpha=0.7)
             # Annotate break-even point with text positioned down and right
-            ax.text(tau + offset, cost / 2, f"CO: {tau:.0f} days", 
+            ax.text(tau + offset, 10e5, f"CO: {tau:.0f} days", 
                     fontsize=7, ha="center", va="top")
 
         ax.set_xlabel(unit_label)
@@ -246,7 +246,7 @@ class Example:
         if scale == "log":
             ax.set_yscale("log")
             ax.set_ylim(bottom=1)  # log scale cannot show zero
-            ax.set_yticks([1, 100, 10000, 1000000])
+            ax.set_yticks([1, 10000, 10000000])
 
         ax.set_xlim(left=-100, right=max(x_vals_a[-1], x_vals_b[-1])*1.05)
         ax.set_xticks([0, 500, 1000, 1500, 2000])
