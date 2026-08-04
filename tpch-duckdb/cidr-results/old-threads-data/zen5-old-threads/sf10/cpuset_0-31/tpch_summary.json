@@ -1,0 +1,19 @@
+[
+  {
+    "scale_factor": "10",
+    "num_queries": 22,
+    "dbgen_seconds": 0.0006909370422363281,
+    "total_query_seconds": 2.149717092514038,
+    "queries_per_second": 10.247790722215415,
+    "queries_per_hour": 36892.046599975496,
+    "num_repetitions": 5,
+    "queries_per_second_stdev": 0.08276883636127867,
+    "queries_per_second_individual": [
+      10.161718949084744,
+      10.305782392738807,
+      10.356972227282405,
+      10.180575275334327,
+      10.233904766636792
+    ]
+  }
+]
