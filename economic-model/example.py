@@ -29,8 +29,8 @@ def set_vldb_style(usetex=True):
         "font.size": 9,
         "axes.titlesize": 10,
         "axes.labelsize": 10,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
         "legend.fontsize": 10,
         "figure.titlesize": 10,
         "axes.linewidth": 0.8,
@@ -249,7 +249,7 @@ class Example:
             ax.set_yticks([1, 100, 10000, 1000000])
 
         ax.set_xlim(left=-100, right=max(x_vals_a[-1], x_vals_b[-1])*1.05)
-        ax.set_xticks([0, 2000])
+        ax.set_xticks([0, 500, 1000, 1500, 2000])
         # ax.set_title(f"\\textit{{r}}={r*100:.0f}{_pct()}")
         ax.grid(True, alpha=0.3)
 
