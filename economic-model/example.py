@@ -55,23 +55,20 @@ def _pct():
 
 class Example:
     """
-    Compares two investment alternatives by their present worth of costs.
+    Compares two or more investment alternatives by their present worth of costs.
     """
 
-    def __init__(self, alt_a, alt_b):
-        self.alt_a = alt_a
-        self.alt_b = alt_b
+    def __init__(self, alt_a, alt_b, alt_c=None):
+        self.alt_a = alt_a # Always local with CAPEX
+        self.alt_b = alt_b # Always cloud with OPEX
+        self.alt_c = alt_c # Optional local alternative with no CAPEX (e.g. donated hardware or free cloud credits)
 
     @property
     def alternatives(self):
-        return [self.alt_a, self.alt_b]
-
-    def print_present_worths(self, r_values=(0.02, 0.05, 0.10)):
-        for r in r_values:
-            pw_a = self.alt_a.present_worth_cost(r)
-            pw_b = self.alt_b.present_worth_cost(r)
-            print(f"r={r*100:.0f}%: {self.alt_a.name}={pw_a:,.0f} €, "
-                  f"{self.alt_b.name}={pw_b:,.0f} €")
+        alts = [self.alt_a, self.alt_b]
+        if self.alt_c is not None:
+            alts.append(self.alt_c)
+        return alts
 
     def plot_vs_r(self, r_values, save_path=None):
         """
@@ -87,9 +84,9 @@ class Example:
         ax.set_ylabel("Present worth of cost (USD)")
         ax.set_ylim(bottom=0)
         ax.grid(True, alpha=0.3)
-        ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), ncol=1,
-                  frameon=False)
-        fig.tight_layout()
+        ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=2,
+                  frameon=False, labelspacing=0.3)
+        fig.tight_layout(pad=0.5)
         if save_path is not None:
             fig.savefig(save_path)
         plt.show()
@@ -125,9 +122,9 @@ class Example:
             ax.set_ylim(bottom=0)
             ax.set_title(alt.name)
             ax.grid(True, alpha=0.3)
-            ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), ncol=1,
-                      frameon=False)
-            fig.tight_layout()
+            ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=2,
+                      frameon=False, labelspacing=0.3)
+            fig.tight_layout(pad=0.5)
 
             path = save_paths.get(alt.name)
             if path is not None:
@@ -158,35 +155,66 @@ class Example:
                 return tau, cost
         return None
 
-    def plot_break_even(self, r, save_path=None, time_units="year"):
+    def plot_break_even(self, r, save_path=None, time_units="year", scale="log", ax=None, machines=None):
         """
-        For a single discount rate `r`, plot both alternatives' cumulative
+        For a single discount rate `r`, plot all alternatives' cumulative
         cost curves in one axes and annotate the break-even point.
 
         save_path: if given, the figure is written there (e.g. an .svg file).
         time_units: "year" (default) or "day"/"days". If "day", the x-axis is
             in days and costs are distributed uniformly per day.
+        ax: optional matplotlib axis. If None, creates a new figure.
+        machines: optional dict mapping alternative names to plot config dicts
+                  with keys like "color", "marker", "linestyle".
         """
-        fig, ax = plt.subplots(figsize=(COLUMN_WIDTH, FIGURE_HEIGHT))
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(COLUMN_WIDTH, FIGURE_HEIGHT))
+            created_figure = True
+        else:
+            created_figure = False
+            fig = ax.get_figure()
 
         if time_units.lower() in ("day", "days"):
-            # Daily break-even calculation
-            x_vals_a, cum_a = self.alt_a.cumulative_present_worth_daily(r)
-            x_vals_b, cum_b = self.alt_b.cumulative_present_worth_daily(r)
             unit_label = "Day"
             unit_short = "days"
         else:
-            # Yearly break-even calculation
-            x_vals_a, cum_a = self.alt_a.cumulative_present_worth(r)
-            x_vals_b, cum_b = self.alt_b.cumulative_present_worth(r)
             unit_label = "Year"
             unit_short = "yr"
 
-        for alt, x_vals, cum in [(self.alt_a, x_vals_a, cum_a),
-                                  (self.alt_b, x_vals_b, cum_b)]:
-            ax.plot(x_vals, [abs(c) for c in cum], label=alt.name)
+        # Get cumulative data for all alternatives
+        alt_data = []
+        for alt in self.alternatives:
+            if time_units.lower() in ("day", "days"):
+                x_vals, cum = alt.cumulative_present_worth_daily(r)
+                # print first 10 days of cumulative cash flows for debugging
+                # print(f"{alt.name} cumulative cash flows (first 10 days):")
+                for day, c in zip(x_vals[:10], cum[:10]):
+                    print(f"{alt.name} Day {day}: {c:.2f}")
+            else:
+                x_vals, cum = alt.cumulative_present_worth(r)
+                print(f"{alt.name} cumulative cash flows (years):")
+                for year, c in zip(x_vals, cum):
+                    print(f"{alt.name} Year {year}: {c:.2f}")
+            
+            # Apply styling from machines dict if available
+            plot_kwargs = {"label": alt.name}
+            if machines and alt.name in machines:
+                config = machines[alt.name]
+                if "color" in config:
+                    plot_kwargs["color"] = config["color"]
+                if "marker" in config:
+                    plot_kwargs["marker"] = config["marker"]
+                if "linestyle" in config:
+                    plot_kwargs["linestyle"] = config["linestyle"]
+                if "linewidth" in config:
+                    plot_kwargs["linewidth"] = config["linewidth"]
+            
+            ax.plot(x_vals, [abs(c) for c in cum], **plot_kwargs)
+            alt_data.append((alt, x_vals, cum))
 
-        # Find break-even point
+        # Find break-even point between alt_a and alt_b
+        x_vals_a, cum_a = alt_data[0][1], alt_data[0][2]
+        x_vals_b, cum_b = alt_data[1][1], alt_data[1][2]
         gap = [abs(b) - abs(a) for a, b in zip(cum_a, cum_b)]  # alt_b - alt_a
         be = None
         for i in range(1, len(gap)):
@@ -200,23 +228,50 @@ class Example:
 
         if be is not None:
             tau, cost = be
-            ax.plot([tau], [cost], marker="*", markersize=12,
-                    color="black", zorder=5)
+            if time_units.lower() in ("day", "days"):
+                offset = 600
+            else:
+                offset = 0.5
+            ax.plot([tau], [cost], marker="*", markersize=5,
+                    color="black", zorder=5, markeredgewidth=0)
             ax.axvline(tau, color="gray", linestyle="--", linewidth=0.8,
-                       alpha=0.7, label=f"BE: {tau:.1f} {unit_short}")
+                       alpha=0.7)
+            # Annotate break-even point with text positioned down and right
+            ax.text(tau + offset, cost / 2, f"CO: {tau:.0f} days", 
+                    fontsize=7, ha="center", va="top")
 
         ax.set_xlabel(unit_label)
         ax.set_ylabel("C.PWC (\$)" if matplotlib.rcParams.get("text.usetex") else "Cum. present worth ($)")
         # ax.set_ylim(bottom=0)
-        ax.set_yscale("log")
-        ax.set_title(f"\\textit{{r}}={r*100:.0f}{_pct()}")
+        if scale == "log":
+            ax.set_yscale("log")
+            ax.set_ylim(bottom=1)  # log scale cannot show zero
+            ax.set_yticks([1, 100, 10000, 1000000])
+
+        ax.set_xlim(left=-100, right=max(x_vals_a[-1], x_vals_b[-1])*1.05)
+        ax.set_xticks([0, 2000])
+        # ax.set_title(f"\\textit{{r}}={r*100:.0f}{_pct()}")
         ax.grid(True, alpha=0.3)
-        ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), ncol=1,
-                  frameon=False)
-        fig.tight_layout()
+
+        handles, labels = ax.get_legend_handles_labels()
+
+        # desired order of labels
+        if self.alt_c is not None:
+            order = [self.alt_a.name, self.alt_c.name, self.alt_b.name]
+
+        # reorder handles and labels together
+        ordered = [(h, l) for h, l in zip(handles, labels) if l in order]
+        ordered = sorted(ordered, key=lambda hl: order.index(hl[1]))
+        handles_ordered, labels_ordered = zip(*ordered)
+
+        ax.legend(handles_ordered, labels_ordered, loc="upper center", bbox_to_anchor=(0.5, 1.6), ncol=3,
+                  frameon=True, columnspacing=0.4, handlelength=0.7, fontsize=7, handletextpad=0.1)
+        # fig.tight_layout(pad=0.5)
         if save_path is not None:
             fig.savefig(save_path)
-        plt.show()
+
+        return ax
+        # plt.show()
 
 
 # mac_local = Alternative.local(

@@ -16,13 +16,24 @@ TEXT_WIDTH = 7.0      # full text (both columns) width
 
 pi_local = Alternative.local(
     name="Pi5",
-    capex=215,  # $ (Raspberry Pi 4 Model B) https://www.berrybase.de/en/raspberry-pi-5-8gb-ram?srsltid=AfmBOor86ohg-H6TTRC6Kv5W5LaccEJzPzlemO4yWzqEgdfHiyDbS2Ez
+    capex=355,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
     utilization=0.3,     # % utilization
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
+
+pi_local_no_capex = Alternative.local(
+    name="Pi5-NoCAPEX",
+    capex=0,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
+    lifetime=6,
+    tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
+    utilization=0.3,     # % utilization
+    energy_price=0.34,   # $/kWh (Berlin)
+    base_annual_opex=0.0  # ignored because TDP info is provided
+)
+
 
 r6a_2xlarge_cloud = Alternative.cloud(
     name="R6a.2xlarge",
@@ -34,8 +45,7 @@ r6a_2xlarge_cloud = Alternative.cloud(
     utilization=1.0,  # billed continuously
 )
 
-example_r6a = Example(pi_local, r6a_2xlarge_cloud)
-example_r6a.print_present_worths()
+example_r6a = Example(pi_local, r6a_2xlarge_cloud, pi_local_no_capex)
 
 # Match the VLDB template (Libertine via LaTeX). Set usetex=False if LaTeX
 # is not installed on this machine.
