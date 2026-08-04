@@ -32,8 +32,25 @@ LOAD tpch;
 DROP TABLE IF EXISTS tpch_run_log;
 CREATE TABLE tpch_run_log (event VARCHAR, ts TIMESTAMP);
 
+SELECT current_setting('threads');
+
+SET VARIABLE computed_threads = (
+    SELECT SUM(
+        CASE
+            WHEN contains(part, '-')
+                THEN CAST(split_part(part, '-', 2) AS INTEGER) - CAST(split_part(part, '-', 1) AS INTEGER) + 1
+            ELSE 1
+        END
+    )
+    FROM (SELECT unnest(string_split(getenv('CPU_SET_DB'), ',')) AS part)
+);
+SET threads = getvariable('computed_threads');
+
+SELECT current_setting('threads');
+
 .echo on
 .timer on
+
 
 INSERT INTO tpch_run_log VALUES ('dbgen_start', current_timestamp);
 INSERT INTO tpch_run_log VALUES ('dbgen_end', current_timestamp);

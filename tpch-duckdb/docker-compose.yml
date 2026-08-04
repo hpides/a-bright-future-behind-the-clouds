@@ -16,17 +16,21 @@ services:
         limits:
           memory: "${MEMORY_LIMIT_DB}"
           
+                #additional_contexts:
+      #  ssd_data: /data_nvme/itolovski/data
+          
   duckdb-tpch-prebuilt:
     build:
       context: ./duckdb-prebuilt
-      additional_contexts:
-        ssd_data: /data_nvme/itolovski/data
       args:
         TPCH_SF: ${TPCH_SF:-1}
+    environment:
+      CPU_SET_DB: "${CPU_SET_DB}"
     container_name: duckdb-tpch-prebuilt
     profiles: ["duckdb-prebuilt"]
     cpuset: "${CPU_SET_DB}"
     volumes:
       - ./results/duckdb-prebuilt:/results
+      - ./duckdb-prebuilt/data:/data
     command: ["duckdb", "/data/tpch-sf${TPCH_SF:-1}.db", "-f", "/scripts/run_tpch_prebuilt.sql"]
-
+   

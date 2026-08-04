@@ -46,7 +46,7 @@ if [ "${valid}" != "true" ]; then
     exit 1
 fi
 
-DATA_DIR="/data_nvme/itolovski/data"
+DATA_DIR="data"
 DATA_FILE="${DATA_DIR}/tpch-sf${SF}.db"
 URL="https://blobs.duckdb.org/data/tpch-sf${SF}.db"
 
@@ -63,7 +63,9 @@ fi
 
 echo "==> Downloading ${URL} ..."
 if command -v curl >/dev/null 2>&1; then
-    curl -fSL --progress-bar -o "${DATA_FILE}.tmp" "${URL}"
+    aria2c -x 8 -s 8 -c -o "${DATA_FILE}.tmp" "${URL}"
+elif command -v curl >/dev/null 2>&1; then
+    curl -fSL -C --retry 10 --retry-delay 5 --progress-bar -o "${DATA_FILE}.tmp" "${URL}"
 elif command -v wget >/dev/null 2>&1; then
     wget -O "${DATA_FILE}.tmp" "${URL}"
 else
