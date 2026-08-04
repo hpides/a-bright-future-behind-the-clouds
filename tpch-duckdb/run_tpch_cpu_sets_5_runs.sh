@@ -76,7 +76,8 @@ RESULTS_DIR="results/duckdb-prebuilt/sf${TPCH_SF}"
 CPU_SETS=("$@")
 if [ ${#CPU_SETS[@]} -eq 0 ]; then
     #CPU_SETS=("0" "0-1" "0-3")
-    CPU_SETS=("0" "0-1" "0-3" "0-7" "0-15" "0-31" "0-63" "0-127" "0-191")
+    CPU_SETS=("0" "0-1" "0-3" "0-7" "0-15" "0-31" "0-63" "0-127")
+    #CPU_SETS=("0-7")
 fi
 
 shopt -s nullglob
