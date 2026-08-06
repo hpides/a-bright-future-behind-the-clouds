@@ -19,7 +19,7 @@ pi_local = Alternative.local(
     capex=355,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
-    utilization=0.3,     # % utilization
+    baseline_utilization=0.3,  # % utilization
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -29,7 +29,7 @@ pi_local_no_capex = Alternative.local(
     capex=0,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
-    utilization=0.3,     # % utilization
+    baseline_utilization=0.3,  # % utilization
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )

@@ -20,7 +20,7 @@ mac_local = Alternative.local(
     capex=5067.0,  # $ (Mac Studio M4) https://www.apple.com/de/shop/buy-mac/mac-studio/m4-max-chip-16-core-cpu-40%E2%80%91core-gpu-64-gb-arbeitsspeicher-1tb-speicher
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.3,  # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -30,7 +30,7 @@ mac_local_no_capex = Alternative.local(
     capex=0,  # $ (Mac Studio M4) https://www.apple.com/de/shop/buy-mac/mac-studio/m4-max-chip-16-core-cpu-40%E2%80%91core-gpu-64-gb-arbeitsspeicher-1tb-speicher
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.3,  # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )

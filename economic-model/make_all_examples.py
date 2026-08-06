@@ -57,7 +57,8 @@ mac_local = Alternative.local(
     capex=5067.0,  # $ (Mac Studio M4) https://www.apple.com/de/shop/buy-mac/mac-studio/m4-max-chip-16-core-cpu-40%E2%80%91core-gpu-64-gb-arbeitsspeicher-1tb-speicher
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.15, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -67,7 +68,8 @@ mac_local_no_capex = Alternative.local(
     capex=0,  # $ (Mac Studio M4) https://www.apple.com/de/shop/buy-mac/mac-studio/m4-max-chip-16-core-cpu-40%E2%80%91core-gpu-64-gb-arbeitsspeicher-1tb-speicher
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.15, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -96,7 +98,8 @@ pi_local = Alternative.local(
     capex=355,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
-    utilization=0.3,     # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.6, # % utilization
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -106,7 +109,8 @@ pi_local_no_capex = Alternative.local(
     capex=0,  # $ (Raspberry Pi 5 Model B) https://www.berrybase.de/en/raspberry-pi-5-16gb-ram
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
-    utilization=0.3,     # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.6, # % utilization
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -135,7 +139,8 @@ m1_local = Alternative.local(
     capex=3155,  # $ (Mac Mini M1) https://www.apple.com/de/shop/buy-mac/mac-mini
     lifetime=6,
     tdp_watts=60,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.24, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -145,7 +150,8 @@ m1_local_no_capex = Alternative.local(
     capex=0,  # $ (Mac Mini M1) https://www.apple.com/de/shop/buy-mac/mac-mini
     lifetime=6,
     tdp_watts=60,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.24, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -163,7 +169,8 @@ zen2_local = Alternative.local(
     capex=17688,  # $ (AMD Ryzen 7 3700X) https://www.amazon.com/AMD-Ryzen-3700X-16-Thread-Processor/dp/B07SXMZLP9
     lifetime=6,
     tdp_watts=280,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.04, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -173,7 +180,8 @@ zen2_local_no_capex = Alternative.local(
     capex=0,  # $ (AMD Ryzen 7 3700X) https://www.amazon.com/AMD-Ryzen-3700X-16-Thread-Processor/dp/B07SXMZLP9
     lifetime=6,
     tdp_watts=280,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.04, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -192,7 +200,8 @@ zen5_local = Alternative.local(
     capex=78135,  # $ (AMD Ryzen 9 7950X) https://www.amazon.com/AMD-Ryzen-9-7950X-Processor/dp/B0BBJQF7ZK
     lifetime=6,
     tdp_watts=550,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.01, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -202,7 +211,8 @@ zen5_local_no_capex = Alternative.local(
     capex=0,  # $ (AMD Ryzen 9 7950X) https://www.amazon.com/AMD-Ryzen-9-7950X-Processor/dp/B0BBJQF7ZK
     lifetime=6,
     tdp_watts=550,         # assumed average TDP for the chip/system
-    utilization=0.3,      # % utilization
+    baseline_utilization=0.1,  # % utilization
+    database_utilization=0.01, # % utilization
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
