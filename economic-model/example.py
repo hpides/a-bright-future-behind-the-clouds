@@ -229,7 +229,7 @@ class Example:
         if be is not None:
             tau, cost = be
             if time_units.lower() in ("day", "days"):
-                offset = 600
+                offset = 500
             else:
                 offset = 0.5
             ax.plot([tau], [cost], marker="*", markersize=5,
@@ -237,7 +237,7 @@ class Example:
             ax.axvline(tau, color="gray", linestyle="--", linewidth=0.8,
                        alpha=0.7)
             # Annotate break-even point with text positioned down and right
-            ax.text(tau + offset, 10e5, f"CO: {tau:.0f} days", 
+            ax.text(tau + offset, 4e6, f"CO:{tau:.0f} days", 
                     fontsize=7, ha="center", va="top")
 
         ax.set_xlabel(unit_label)
@@ -264,7 +264,7 @@ class Example:
         ordered = sorted(ordered, key=lambda hl: order.index(hl[1]))
         handles_ordered, labels_ordered = zip(*ordered)
 
-        ax.legend(handles_ordered, labels_ordered, loc="upper center", bbox_to_anchor=(0.5, 1.6), ncol=3,
+        ax.legend(handles_ordered, labels_ordered, loc="upper center", bbox_to_anchor=(0.5, 1.7), ncol=3,
                   frameon=True, columnspacing=0.4, handlelength=0.7, fontsize=7, handletextpad=0.1)
         # fig.tight_layout(pad=0.5)
         if save_path is not None:

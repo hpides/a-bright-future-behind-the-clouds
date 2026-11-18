@@ -5,6 +5,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from example import Example, set_vldb_style
 
+# Reference CPU workload, independent of continuously billed cloud hours.
+CLOUD_CORES = 8
+CLOUD_UTILIZATION = 0.30
+
 # --- Output location for figures ---
 PLOTS_DIR = os.path.join(os.path.dirname(__file__), "plots")
 
@@ -21,6 +25,9 @@ mac_local = Alternative.local(
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
     baseline_utilization=0.3,  # % utilization
+    cores=16,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -31,6 +38,9 @@ mac_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
     baseline_utilization=0.3,  # % utilization
+    cores=16,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )

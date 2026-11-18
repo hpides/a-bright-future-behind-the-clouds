@@ -5,6 +5,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from example import Example, set_vldb_style
 
+# Reference CPU workload, independent of continuously billed cloud hours.
+CLOUD_CORES = 8
+CLOUD_UTILIZATION = 0.90
+
 # --- Output location for figures ---
 PLOTS_DIR = os.path.join(os.path.dirname(__file__), "plots")
 
@@ -58,7 +62,9 @@ mac_local = Alternative.local(
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.15, # % utilization
+    cores=16,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -69,7 +75,9 @@ mac_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=80,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.15, # % utilization
+    cores=16,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -99,7 +107,9 @@ pi_local = Alternative.local(
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.6, # % utilization
+    cores=4,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -110,7 +120,9 @@ pi_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.6, # % utilization
+    cores=4,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -118,8 +130,9 @@ pi_local_no_capex = Alternative.local(
 
 r6a_2xlarge_cloud = Alternative.cloud(
     name="R6a",
+    cores=CLOUD_CORES,
     lifetime=6,
-    hourly_rate=0.45,  # $/hour https://aws.amazon.com/ec2/pricing/on-demand/
+    hourly_rate=0.66,  # $/hour https://aws.amazon.com/ec2/pricing/on-demand/
     discount_on_rate=0,  # discount if commit to 3 years (https://aws.amazon.com/ec2/dedicated-hosts/pricing/)
     hours_per_year=24*365,  # 8,760 hours/year
     opex_growth=0.0,
@@ -140,7 +153,9 @@ m1_local = Alternative.local(
     lifetime=6,
     tdp_watts=60,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.24, # % utilization
+    cores=10,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -151,7 +166,9 @@ m1_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=60,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.24, # % utilization
+    cores=10,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -170,7 +187,9 @@ zen2_local = Alternative.local(
     lifetime=6,
     tdp_watts=280,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.04, # % utilization
+    cores=64,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -181,7 +200,9 @@ zen2_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=280,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.04, # % utilization
+    cores=64,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -201,7 +222,9 @@ zen5_local = Alternative.local(
     lifetime=6,
     tdp_watts=550,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.01, # % utilization
+    cores=192,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -212,7 +235,9 @@ zen5_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=550,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization
-    database_utilization=0.01, # % utilization
+    cores=192,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,    # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -243,5 +268,5 @@ fig.text(0.5, -0.5, "Day", ha="center", fontsize=10)
 # fig.tight_layout()
 save_path=os.path.join(PLOTS_DIR, "break_even_all.svg")
 plt.savefig(save_path, bbox_inches='tight', pad_inches=0.1)
+print(f"Saved figure to {save_path}")
 # plt.show()
-
