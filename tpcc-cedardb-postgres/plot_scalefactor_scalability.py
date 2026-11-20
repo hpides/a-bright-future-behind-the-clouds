@@ -39,13 +39,13 @@ MACHINES = {
     "m1-max":  {"label": "Apple M1 Pro",         "color": "#f58231", "marker": "v", "linestyle": (0, (3, 1, 1, 1))},
     "m4-max":  {"label": "Apple M4 Max",         "color": "#3cb44b", "marker": "s", "linestyle": "--"},
     "zen2":    {"label": "AMD EPYC (Zen 2)",     "color": "#911eb4", "marker": "D", "linestyle": "-."},
-    "zen5":    {"label": "AMD EPYC (Zen 5)",     "color": "#4363d8", "marker": "^", "linestyle": ":"},
+   # "zen5":    {"label": "AMD EPYC (Zen 5)",     "color": "#4363d8", "marker": "^", "linestyle": ":"},
+    "r6a-2xlarge": {"label": "r6a.2xlarge",      "color": "#33c7d8", "marker": "X", "linestyle": (0, (5, 3))},
 }
 
 THRESHOLDS = {
-    "Tx Small": {"value": 175,   "color": "black", "marker": "x", "linestyle": (0, (1, 1))},
-    "Tx Medium": {"value": 875,   "color": "black", "marker": "+", "linestyle": (0, (5, 1))},
-    "Tx Large": {"value": 17500, "color": "black", "marker": "*", "linestyle": (0, (3, 3))},
+    "Tx Low":  {"value": 875,  "color": "black", "marker": "+", "linestyle": (0, (5, 1))},
+    "Tx High": {"value": 8750, "color": "black", "marker": "*", "linestyle": (0, (3, 3))},
 }
 
 # ---------------------------------------------------------------------------
@@ -132,7 +132,7 @@ for sf in SCALE_FACTORS:
         all_values.extend(spec["value"] for spec in THRESHOLDS.values())
 
 y_bottom = 10
-y_top = 10 ** math.ceil(math.log10(max(all_values)))
+y_top = 8 ** math.ceil(math.log10(max(all_values)))
 
 ncols = len(SCALE_FACTORS)
 nrows = 1
