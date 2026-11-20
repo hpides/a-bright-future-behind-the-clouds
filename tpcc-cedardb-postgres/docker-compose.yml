@@ -107,7 +107,7 @@ services:
       DB_USER: ${DB_USER:-admin}
       DB_PASSWORD: ${DB_PASSWORD:-password}
     volumes:
-      - ./results/postgres:/benchbase/results
+      - ./results/postgres/:/benchbase/results
     deploy:
       resources:
         limits:

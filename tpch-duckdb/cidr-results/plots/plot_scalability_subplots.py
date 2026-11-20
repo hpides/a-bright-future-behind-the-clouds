@@ -23,16 +23,18 @@ if usetex:
 matplotlib.rcParams.update(rc)
 
 DATA_ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
-# OUT_PATH = os.path.join(os.path.dirname(__file__), "tpch_scalability_combined_subplots.png")
-OUT_PATH = os.path.join(os.path.dirname(__file__), "tpch_scalability_combined_subplots.svg")
+#OUT_PATH = os.path.join(os.path.dirname(__file__), "tpch_scalability_combined_subplots_no_zen5.png")
+OUT_PATH = os.path.join(os.path.dirname(__file__), "tpch_scalability_combined_subplots_no_zen5.svg")
 SCALE_FACTORS = ["sf1", "sf10", "sf30", "sf100", "sf300"]
+#SCALE_FACTORS = ["sf1", "sf10", "sf30", "sf100"]
 
 MACHINES = {
     "pi5":     {"label": "Raspberry Pi 5",  "color": "#e6194b", "marker": "o", "linestyle": "-"},
     "m1":      {"label": "Apple M1 Pro",        "color": "#f58231", "marker": "v", "linestyle": (0, (3, 1, 1, 1))},
     "m4":      {"label": "Apple M4 Max",    "color": "#3cb44b", "marker": "s", "linestyle": "--"},
     "p620":    {"label": "AMD EPYC (Zen 2)",     "color": "#911eb4", "marker": "D", "linestyle": "-."},
-    "zen5":    {"label": "AMD EPYC (Zen 5)", "color": "#4363d8", "marker": "^", "linestyle": ":"},
+    #"zen5":    {"label": "AMD EPYC (Zen 5)", "color": "#4363d8", "marker": "^", "linestyle": ":"},
+    "r6a-2xlarge": {"label": "r6a.2xlarge", "color": "#33c7d8", "marker": "X", "linestyle": (0, (5, 3))},
 }
 
 MAX_THREADS = {
@@ -42,9 +44,8 @@ MAX_THREADS = {
 
 DARK_GREY = "#404040"
 BI_LINES = [
-    ("BI Small", 0.17, "x", ":"),
-    ("BI Medium", 0.875, "+", (0, (8, 4))),
-    ("BI Large", 3.5, "*", (0, (3, 3))),
+    ("BI Low", 0.008, "x", ":"),
+    ("BI High", 0.5, "*", (0, (3, 3))),
 ]
 
 

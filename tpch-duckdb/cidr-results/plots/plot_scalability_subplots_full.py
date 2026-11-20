@@ -33,6 +33,7 @@ MACHINES = {
     "m4":      {"label": "Apple M4 Max",    "color": "#3cb44b", "marker": "s", "linestyle": "--"},
     "zen5":    {"label": "AMD EPYC (Zen 5)", "color": "#4363d8", "marker": "^", "linestyle": ":"},
     "p620":    {"label": "AMD EPYC (Zen 2)",     "color": "#911eb4", "marker": "D", "linestyle": "-."},
+    "r6a":    {"label": "r6a.2xlarge",     "color": "#00b8d4", "marker": "P", "linestyle": (0, (5, 3))},
 }
 
 def cpuset_to_threads(cpuset: str) -> int:
