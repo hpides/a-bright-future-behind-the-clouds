@@ -183,7 +183,7 @@ example_m1 = Example(m1_local, r6a_2xlarge_cloud, m1_local_no_capex)
 
 zen2_local = Alternative.local(
     name="Z2",
-    capex=17688,  # $ (AMD Ryzen 7 3700X) https://www.amazon.com/AMD-Ryzen-3700X-16-Thread-Processor/dp/B07SXMZLP9
+    capex=9580,  # $ (AMD Ryzen 7 3700X) https://www.amazon.com/AMD-Ryzen-3700X-16-Thread-Processor/dp/B07SXMZLP9
     lifetime=6,
     tdp_watts=280,         # assumed average TDP for the chip/system
     baseline_utilization=0.1,  # % utilization

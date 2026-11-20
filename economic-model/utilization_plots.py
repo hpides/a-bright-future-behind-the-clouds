@@ -33,7 +33,7 @@ LOCAL_SPECS = {
     "P5": dict(capex=355, tdp_watts=25, cores=4),     # Raspberry Pi 5
     "M1": dict(capex=3155, tdp_watts=60, cores=10),   # Apple M1 Pro
     "M4": dict(capex=5067.0, tdp_watts=80, cores=16), # Apple M4 Max (Mac Studio)
-    "Z2": dict(capex=17688, tdp_watts=280, cores=64),  # AMD Zen 2
+    "Z2": dict(capex=9580, tdp_watts=280, cores=64),  # AMD Zen 2
 }
 
 
