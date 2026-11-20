@@ -1,4 +1,10 @@
 from helpers import HOURS_PER_YEAR, npv_of_cash_flows, discount_factor
+from math import ceil, isfinite
+
+
+def _validate_cores(cores, name):
+    if isinstance(cores, bool) or not isinstance(cores, int) or cores <= 0:
+        raise ValueError(f"{name} must be a positive integer")
 
 
 class Alternative:
@@ -13,10 +19,14 @@ class Alternative:
                  idle_watts=None,
                  baseline_utilization=None, database_utilization=None,
                  hourly_rate=None, hours_per_year=None, discount_on_rate=0.0,
-                 salvage=0.0):
+                 salvage=0.0, *, cores=None):
+        if cores is not None:
+            _validate_cores(cores, "cores")
         self.name = name
         self.type = type
         self.lifetime = lifetime
+        self.cores = cores
+        self.instance_count = 1
         self.capex = float(capex)
 
         # OPEX
@@ -45,7 +55,8 @@ class Alternative:
     def local(cls, name, capex, lifetime,
               tdp_watts=None, baseline_utilization=None, energy_price=None,
               idle_watts=None, database_utilization=None,
-              base_annual_opex=0.0, opex_growth=0.0, salvage=0.0):
+              base_annual_opex=0.0, opex_growth=0.0, salvage=0.0, *,
+              cores=None, cloud_cores=None, cloud_utilization=None):
         """
         tdp_watts: chip/system TDP in watts (e.g. 80), the power draw at 100%
             utilization.
@@ -60,29 +71,69 @@ class Alternative:
         energy_price: €/kWh
         If tdp_watts, baseline_utilization, and energy_price are all given,
         energy OPEX will be derived from them; otherwise base_annual_opex is used.
+
+        For core-derived sizing, provide cores (per local instance),
+        cloud_cores (reference workload), and cloud_utilization (CPU fraction,
+        not billed hours), instead of database_utilization. Database demand is
+        cloud_cores * cloud_utilization / cores. Instances are added until
+        baseline + database utilization fits within 100% on each instance.
+        Returned database_utilization is per instance, evenly distributed;
+        cores and baseline_utilization also remain per instance. capex,
+        tdp_watts, idle_watts, annual_opex, and salvage are fleet totals,
+        scaled from the per-instance inputs. Zero demand keeps one instance.
+        Without reference workload inputs, legacy utilization is unchanged.
         """
-        return cls(
+        instance_count = 1
+        if cloud_cores is not None or cloud_utilization is not None:
+            if cores is None or cloud_cores is None or cloud_utilization is None:
+                raise ValueError(
+                    "Core-derived sizing requires cores, cloud_cores, and cloud_utilization"
+                )
+            _validate_cores(cores, "cores")
+            _validate_cores(cloud_cores, "cloud_cores")
+            if database_utilization is not None:
+                raise ValueError(
+                    "database_utilization cannot be combined with core-derived sizing"
+                )
+            if not isfinite(cloud_utilization) or not 0 <= cloud_utilization <= 1:
+                raise ValueError("cloud_utilization must be finite and between 0 and 1")
+            if baseline_utilization is None or not isfinite(baseline_utilization) or \
+               not 0 <= baseline_utilization < 1:
+                raise ValueError("baseline_utilization must be finite and in [0, 1)")
+            demand = cloud_cores * cloud_utilization / cores
+            instance_count = max(1, ceil(demand / (1 - baseline_utilization)))
+            database_utilization = demand / instance_count
+
+        alternative = cls(
             name=name,
             type="local",
             lifetime=lifetime,
-            capex=capex,
-            annual_opex=base_annual_opex,
+            capex=float(capex) * instance_count,
+            annual_opex=(
+                float(base_annual_opex) * instance_count
+                if base_annual_opex is not None else None
+            ),
             opex_growth=opex_growth,
-            tdp_watts=tdp_watts,
+            tdp_watts=tdp_watts * instance_count if tdp_watts is not None else None,
             baseline_utilization=baseline_utilization,
             database_utilization=database_utilization,
             energy_price=energy_price,
-            idle_watts=idle_watts,
-            salvage=salvage,
+            idle_watts=idle_watts * instance_count if idle_watts is not None else None,
+            salvage=float(salvage) * instance_count,
+            cores=cores,
         )
+        alternative.instance_count = instance_count
+        return alternative
 
     @classmethod
     def cloud(cls, name, lifetime,
               annual_opex=None, hourly_rate=None, hours_per_year=None,
-              utilization=None, discount_on_rate=0.0, opex_growth=0.0):
+              utilization=None, discount_on_rate=0.0, opex_growth=0.0, *,
+              cores=None):
         """
         utilization: fraction [0,1] applied to hours_per_year for
         rate-based costs (e.g. 0.5 uses 0.5 * hours_per_year).
+        cores: optional per-instance CPU core count; does not affect billing.
         """
         return cls(
             name=name,
@@ -95,6 +146,7 @@ class Alternative:
             hours_per_year=hours_per_year,
             utilization=utilization,
             discount_on_rate=discount_on_rate,
+            cores=cores,
         )
 
     def yearly_opex(self, year):

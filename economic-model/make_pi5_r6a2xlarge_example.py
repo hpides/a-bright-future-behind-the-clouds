@@ -5,6 +5,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from example import Example, set_vldb_style
 
+# Reference CPU workload, independent of continuously billed cloud hours.
+CLOUD_CORES = 8
+CLOUD_UTILIZATION = 0.30
+
 # --- Output location for figures ---
 PLOTS_DIR = os.path.join(os.path.dirname(__file__), "plots")
 
@@ -20,6 +24,9 @@ pi_local = Alternative.local(
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
     baseline_utilization=0.3,  # % utilization
+    cores=4,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -30,6 +37,9 @@ pi_local_no_capex = Alternative.local(
     lifetime=6,
     tdp_watts=25,         # assumed average TDP for the Raspberry Pi 5
     baseline_utilization=0.3,  # % utilization
+    cores=4,
+    cloud_cores=CLOUD_CORES,
+    cloud_utilization=CLOUD_UTILIZATION,
     energy_price=0.34,   # $/kWh (Berlin)
     base_annual_opex=0.0  # ignored because TDP info is provided
 )
@@ -37,6 +47,7 @@ pi_local_no_capex = Alternative.local(
 
 r6a_2xlarge_cloud = Alternative.cloud(
     name="R6a.2xlarge",
+    cores=CLOUD_CORES,
     lifetime=6,
     hourly_rate=0.45,  # $/hour https://aws.amazon.com/ec2/pricing/on-demand/
     discount_on_rate=0,  # discount if commit to 3 years (https://aws.amazon.com/ec2/dedicated-hosts/pricing/)
